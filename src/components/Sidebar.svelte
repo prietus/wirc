@@ -10,6 +10,7 @@
   } = $props();
 
   let collapsed = $state<Record<string, boolean>>({});
+  let brokenIcons = $state<Record<string, boolean>>({});
 
   function stateColor(n: Network) {
     const bouncerState = n.attrs["state"];
@@ -39,7 +40,14 @@
             {collapsed[net.id] ? "▸" : "▾"}
           </button>
           <button class="net" onclick={() => app.setActive(net.server)} title={stateTitle(net)}>
-            <span class="dot" style:background={stateColor(net)}></span>
+            {#if net.icon && !brokenIcons[net.icon]}
+              <span class="net-icon">
+                <img src={net.icon} alt="" referrerpolicy="no-referrer" onerror={() => (brokenIcons[net.icon!] = true)} />
+                <span class="dot badge-dot" style:background={stateColor(net)}></span>
+              </span>
+            {:else}
+              <span class="dot" style:background={stateColor(net)}></span>
+            {/if}
             <span class="name">{label(net.server)}</span>
             {#if net.server.highlights}<span class="badge hl">{net.server.highlights}</span>{/if}
           </button>
@@ -172,6 +180,27 @@
     height: 8px;
     border-radius: 50%;
     flex: none;
+  }
+  .net-icon {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .net-icon img {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    object-fit: cover;
+    display: block;
+  }
+  .badge-dot {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 7px;
+    height: 7px;
+    box-shadow: 0 0 0 2px var(--bg-2);
   }
   .badge {
     font-size: 0.75em;

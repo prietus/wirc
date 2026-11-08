@@ -5,7 +5,7 @@
   import { LANGS, t } from "../lib/i18n.svelte";
   import { config } from "../lib/app.svelte";
 
-  let { onClose }: { onClose: () => void } = $props();
+  let { onClose, onCustomize }: { onClose: () => void; onCustomize?: () => void } = $props();
 
   let highlights = $state(settings.highlightWords.join("\n"));
   let ignored = $state(settings.ignored.join("\n"));
@@ -54,6 +54,9 @@
           <option value="light">{t("set.themeLight")}</option>
         </select>
       </div>
+      {#if onCustomize}
+        <button class="btn customize" onclick={onCustomize}>🎨 {t("theme.customize")}</button>
+      {/if}
       <div class="field">
         <label for="fs">{t("set.fontSize", { n: settings.fontSize })}</label>
         <input id="fs" type="range" min="11" max="20" bind:value={settings.fontSize} />
@@ -148,6 +151,10 @@
     font-size: 0.8em;
     color: var(--fg-faint);
     margin: -4px 0 8px 24px;
+  }
+  .customize {
+    width: 100%;
+    margin-bottom: 12px;
   }
   .about {
     margin: 16px 0 0;

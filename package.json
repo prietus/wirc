@@ -1,7 +1,7 @@
 {
   "name": "wirc",
   "private": true,
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Full-featured web IRC client for soju",
   "license": "AGPL-3.0-or-later",
   "author": "teraflops",

@@ -1,10 +1,16 @@
 // User preferences, persisted in localStorage.
 
+import { emptyCustom, type ThemeCustom } from "./theme";
+
 export type JoinPartMode = "show" | "smart" | "hide";
 
 export interface Settings {
   language: "en" | "es";
   theme: "dark" | "light" | "system";
+  /** Per-mode colour overrides + fonts (see lib/theme.ts). */
+  themeCustom: ThemeCustom;
+  /** User stylesheet, injected after the app's styles. */
+  customCss: string;
   /** Default visibility of joins/parts/quits. */
   joinPartMode: JoinPartMode;
   /** Per-buffer overrides, keyed by Buffer.key. */
@@ -32,6 +38,8 @@ export interface Settings {
 const DEFAULTS: Settings = {
   language: "en",
   theme: "system",
+  themeCustom: emptyCustom(),
+  customCss: "",
   joinPartMode: "smart",
   bufferJoinPart: {},
   showSeconds: false,
@@ -80,7 +88,7 @@ export function saveSettings() {
 }
 
 export function resetSettings() {
-  Object.assign(settings, DEFAULTS);
+  Object.assign(settings, { ...DEFAULTS, themeCustom: emptyCustom(), bufferJoinPart: {} });
   saveSettings();
 }
 

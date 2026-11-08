@@ -260,6 +260,13 @@ export class Network {
   }
   bouncerCaps = $state(false);
 
+  /** Network icon URL advertised via the draft/ICON ISUPPORT token. */
+  get icon(): string | undefined {
+    void this.rev;
+    const v = this.client.isupport.get("DRAFT/ICON");
+    return v && /^https?:\/\//i.test(v) ? v : undefined;
+  }
+
   get displayName() {
     return this.attrs["name"] || this.client.isupport.get("NETWORK") || this.name;
   }

@@ -9,10 +9,13 @@
   import { app, toasts } from "./lib/app.svelte";
   import { settings } from "./lib/settings.svelte";
   import { t } from "./lib/i18n.svelte";
+  import { applyTheme } from "./lib/theme";
+  import ThemeDialog from "./components/ThemeDialog.svelte";
   import type { Network } from "./lib/state.svelte";
 
   let showSwitcher = $state(false);
   let showSettings = $state(false);
+  let showTheme = $state(false);
   let search = $state<{ q: string } | null>(null);
   let networkDialog = $state<{ network?: Network } | null>(null);
   let sidebarOpen = $state(false);
@@ -27,11 +30,15 @@
   // Theme + font size.
   $effect(() => {
     const root = document.documentElement;
+    // Read reactive settings here so the effect re-runs when they change.
+    const custom = $state.snapshot(settings.themeCustom);
+    const css = settings.customCss;
     const apply = () => {
       const dark =
         settings.theme === "dark" ||
         (settings.theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
       root.dataset.theme = dark ? "dark" : "light";
+      applyTheme(root, dark ? "dark" : "light", custom, css);
     };
     apply();
     root.style.setProperty("--font-size", settings.fontSize + "px");
@@ -127,7 +134,16 @@
 {/if}
 
 {#if showSwitcher}<QuickSwitcher onClose={() => (showSwitcher = false)} />{/if}
-{#if showSettings}<SettingsDialog onClose={() => (showSettings = false)} />{/if}
+{#if showSettings}
+  <SettingsDialog
+    onClose={() => (showSettings = false)}
+    onCustomize={() => {
+      showSettings = false;
+      showTheme = true;
+    }}
+  />
+{/if}
+{#if showTheme}<ThemeDialog onClose={() => (showTheme = false)} />{/if}
 {#if search && app.active}
   <SearchPanel buf={app.active} initial={search.q} onClose={() => (search = null)} />
 {/if}

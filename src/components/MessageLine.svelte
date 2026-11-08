@@ -96,6 +96,7 @@
   class:event={!isChat}
   class:cont={continuation && !line.replyTo}
   data-msgid={line.msgid}
+  data-nick={line.nick}
 >
   {#if line.replyTo}
     <button class="reply-ref" onclick={() => line.replyTo && onJump?.(line.replyTo)}>
@@ -193,7 +194,7 @@
     <div class="thread">
       {#each replies as r (r.id)}
         {@const rr = r.msgid ? reactionsFor?.(r.msgid) : undefined}
-        <div class="treply" class:highlight={r.highlight} data-msgid={r.msgid}>
+        <div class="treply" class:highlight={r.highlight} data-msgid={r.msgid} data-nick={r.nick}>
           <span class="tarrow">↳</span>
           <span class="tbody">
             {#if r.kind === "action"}
