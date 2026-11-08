@@ -1,0 +1,90 @@
+# Example: wirc on Kubernetes with Traefik, next to an existing soju.
+# Copy to deploy/k8s/wirc.yaml (git-ignored) and adjust hosts, image and the
+# soju Service (namespace "soju", port 8080 = its http/ws listener).
+#
+# Layout:
+#   Traefik routes wirc.example.com/socket and /uploads straight to soju:8080,
+#   everything else to the wirc nginx. Same origin → soju's default
+#   http-origin check accepts it without config changes.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wirc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wirc
+  namespace: wirc
+  labels: { app: wirc }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: wirc }
+  template:
+    metadata:
+      labels: { app: wirc }
+    spec:
+      containers:
+        - name: wirc
+          image: docker.io/YOUR_USER/wirc:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: http, containerPort: 8080 }
+          env:
+            - { name: WIRC_SERVER_URL, value: "" } # same origin: wss://wirc.example.com/socket
+          readinessProbe:
+            httpGet: { path: /, port: http }
+            periodSeconds: 10
+          resources:
+            requests: { cpu: 5m, memory: 16Mi }
+            limits: { memory: 64Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wirc
+  namespace: wirc
+spec:
+  selector: { app: wirc }
+  ports:
+    - { name: http, port: 80, targetPort: http }
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: wirc-ws-nocompress
+  namespace: wirc
+spec:
+  headers:
+    customRequestHeaders:
+      Sec-WebSocket-Extensions: ""
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: wirc
+  namespace: wirc
+spec:
+  entryPoints: [websecure]
+  routes:
+    - kind: Rule
+      match: Host(`wirc.example.com`) && PathPrefix(`/socket`)
+      priority: 20
+      middlewares:
+        - name: wirc-ws-nocompress
+      services:
+        - { name: soju, namespace: soju, port: 8080 }
+    - kind: Rule
+      match: Host(`wirc.example.com`) && PathPrefix(`/uploads`)
+      priority: 20
+      services:
+        - { name: soju, namespace: soju, port: 8080 }
+    - kind: Rule
+      match: Host(`wirc.example.com`)
+      priority: 10
+      services:
+        - { name: wirc, port: 80 }
+  tls: {}

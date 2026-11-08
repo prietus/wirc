@@ -1,0 +1,11 @@
+# Standalone: wirc serving the UI and proxying /socket to an existing soju.
+#   SOJU_UPSTREAM=host:port docker compose up --build
+services:
+  wirc:
+    build: .
+    image: wirc:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SOJU_UPSTREAM: ${SOJU_UPSTREAM:-soju:8080}
+    restart: unless-stopped

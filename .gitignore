@@ -1,0 +1,42 @@
+# Dependencies & build output
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.vite/
+.svelte-kit/
+
+# Test artifacts
+test-results/
+playwright-report/
+blob-report/
+*.png.diff
+
+# Logs
+*.log
+npm-debug.log*
+
+# Secrets & local config — never commit these
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+*.crt
+*.p12
+*.kubeconfig
+kubeconfig*
+secrets/
+*.secret.yaml
+
+# Real deployment manifests (personal hosts, image names, cluster layout).
+# Commit the *.example.yaml templates instead.
+deploy/k8s/*.yaml
+!deploy/k8s/*.example.yaml
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
