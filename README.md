@@ -8,6 +8,14 @@ that talks IRC directly to soju over WebSocket. It needs no backend of its own.
 
 **English** and **Spanish** UI.
 
+![wirc on desktop: networks and channels on the left, the conversation in the middle, the nick list on the right](docs/screenshots/desktop.jpg)
+
+<p align="center">
+  <img src="docs/screenshots/settings.jpg" alt="Settings dialog" width="68%">
+  &nbsp;
+  <img src="docs/screenshots/mobile.jpg" alt="wirc on a phone" width="24%">
+</p>
+
 ## Features
 
 **Bouncer integration (soju)**
@@ -158,7 +166,7 @@ the release. Anything else (internal class names, DOM structure) may change betw
 | `.line` | One message row. Modifiers: `.privmsg`, `.notice`, `.action`, `.join`, `.part`, `.quit`, `.nick`, `.kick`, `.mode`, `.topic`, `.invite`, `.info`, `.error`, `.highlight` (mentions you), `.self` (sent by you), `.cont` (continuation of the previous message) |
 | `.line[data-nick="…"]` | Messages from a given nick (exact match, as sent by the server) |
 | `.line[data-msgid="…"]` | A specific message |
-| `.line > time`, `.line .nick`, `.line .text` | Timestamp, nick and text cells of a row |
+| `.line > time`, `.line .sender`, `.line .text` | Timestamp, nick and text cells of a row |
 | `.reply-ref` | "↪ an earlier message" shown on replies whose original isn't loaded |
 | `.thread`, `.treply`, `.treply[data-nick="…"]` | Replies nested under a message |
 | `.reactions`, `.chip`, `.chip.mine` | Reaction chips (`.mine` = you reacted) |

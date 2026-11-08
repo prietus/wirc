@@ -593,7 +593,22 @@
     }
     .title {
       flex-direction: column;
+      align-items: stretch;
       gap: 0;
+    }
+    .title h2 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .title .topic {
+      flex: none;
+    }
+    header {
+      gap: 6px;
+      padding: 6px 8px;
+    }
+    .actions :global(.icon-btn) {
+      padding: 4px;
     }
   }
 </style>

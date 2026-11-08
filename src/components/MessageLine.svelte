@@ -112,19 +112,19 @@
 
   <time datetime={line.ts} title={line.time.toLocaleString(locale())}>{fmtTime(line.time)}</time>
   {#if line.kind === "privmsg"}
-    <button class="nick" style:color={color} onclick={() => onNick(line.nick!)}>{continuation && !line.replyTo ? "" : line.nick}</button>
+    <button class="sender" style:color={color} onclick={() => onNick(line.nick!)}>{continuation && !line.replyTo ? "" : line.nick}</button>
     <span class="text"><Rich text={line.text} /></span>
   {:else if line.kind === "notice"}
-    <button class="nick" style:color={color} onclick={() => onNick(line.nick!)}>-{line.nick}-</button>
+    <button class="sender" style:color={color} onclick={() => onNick(line.nick!)}>-{line.nick}-</button>
     <span class="text"><Rich text={line.text} /></span>
   {:else if line.kind === "action"}
-    <span class="nick">*</span>
+    <span class="sender">*</span>
     <span class="text"
       ><button class="inline-nick" style:color={color} onclick={() => onNick(line.nick!)}>{line.nick}</button>
       <Rich text={line.text} /></span
     >
   {:else}
-    <span class="nick sym">
+    <span class="sender sym">
       {#if line.kind === "join"}→{:else if line.kind === "part" || line.kind === "quit" || line.kind === "kick"}←{:else if line.kind === "error"}!{:else}–{/if}
     </span>
     <span class="text">
@@ -280,7 +280,7 @@
     font-size: 0.78em;
     white-space: nowrap;
   }
-  .nick {
+  .sender {
     text-align: right;
     font-weight: 600;
     overflow: hidden;
@@ -291,7 +291,7 @@
     padding: 0;
     color: var(--fg-dim);
   }
-  .nick.sym {
+  .sender.sym {
     color: var(--fg-faint);
     font-weight: normal;
   }
@@ -319,7 +319,7 @@
   .error .text {
     color: var(--err);
   }
-  .self .nick {
+  .self .sender {
     opacity: 0.85;
   }
   code {
@@ -532,7 +532,7 @@
     .line {
       grid-template-columns: auto 1fr;
     }
-    .line .nick {
+    .line .sender {
       text-align: left;
     }
     .line .text,
@@ -542,8 +542,16 @@
     .reactions {
       grid-column: 1 / -1;
     }
-    .line.cont .nick {
+    .line.cont .sender,
+    .line.cont > time {
       display: none;
+    }
+    /* Events (joins, nick changes…) fit on one row: time + text. */
+    .line.event .sender {
+      display: none;
+    }
+    .line.event .text {
+      grid-column: 2;
     }
   }
 </style>
