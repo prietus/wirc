@@ -73,6 +73,14 @@
       </div>
       <label class="check"><input type="checkbox" bind:checked={settings.inlineMedia} /> {t("set.inlineMedia")}</label>
       <span class="hint media-hint">{t("set.inlineMediaHint")}</span>
+      <div class="field">
+        <label for="msize">{t("set.mediaSize")}</label>
+        <select id="msize" bind:value={settings.mediaSize} disabled={!settings.inlineMedia}>
+          <option value="small">{t("set.mediaSmall")}</option>
+          <option value="medium">{t("set.mediaMedium")}</option>
+          <option value="large">{t("set.mediaLarge")}</option>
+        </select>
+      </div>
     </section>
 
     <section>

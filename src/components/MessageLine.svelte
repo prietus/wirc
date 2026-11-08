@@ -366,8 +366,8 @@
   .thumb img,
   video {
     display: block;
-    max-height: 280px;
-    max-width: min(420px, 100%);
+    max-height: var(--media-h, 280px);
+    max-width: min(var(--media-w, 420px), 100%);
     border-radius: var(--radius);
   }
   audio {

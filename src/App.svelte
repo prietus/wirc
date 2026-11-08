@@ -36,6 +36,9 @@
     apply();
     root.style.setProperty("--font-size", settings.fontSize + "px");
     root.lang = settings.language;
+    const media = { small: [120, 200], medium: [280, 420], large: [480, 720] }[settings.mediaSize] ?? [280, 420];
+    root.style.setProperty("--media-h", media[0] + "px");
+    root.style.setProperty("--media-w", media[1] + "px");
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
@@ -141,7 +144,7 @@
 <style>
   .layout {
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-columns: 200px minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
     height: 100%;
     overflow: hidden;

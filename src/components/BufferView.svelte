@@ -576,7 +576,7 @@
     font-style: italic;
   }
   .members-col {
-    width: 200px;
+    width: 160px;
     flex: none;
     display: flex;
     flex-direction: column;

@@ -91,7 +91,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: 8px 6px;
+    padding: 8px 4px;
   }
   section {
     margin-bottom: 10px;
@@ -138,7 +138,7 @@
     color: var(--fg-dim);
   }
   .buf {
-    padding-left: 26px;
+    padding-left: 22px;
     color: var(--fg-dim);
   }
   .net:hover,

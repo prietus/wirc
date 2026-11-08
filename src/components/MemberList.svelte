@@ -49,7 +49,7 @@
     min-width: 0;
   }
   .head {
-    padding: 12px 12px 6px;
+    padding: 12px 10px 6px;
     font-size: 0.75em;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -67,7 +67,7 @@
     overflow-y: auto;
     flex: 1;
     min-height: 0;
-    padding: 0 6px 8px;
+    padding: 0 4px 8px;
   }
   .member {
     display: flex;

@@ -19,6 +19,7 @@ export interface Settings {
   sendTyping: boolean;
   showTyping: boolean;
   inlineMedia: boolean;
+  mediaSize: "small" | "medium" | "large";
   /** Origins whose extension-less links are tried as images (learned from our uploads). */
   mediaOrigins: string[];
   showMemberList: boolean;
@@ -42,6 +43,7 @@ const DEFAULTS: Settings = {
   sendTyping: true,
   showTyping: true,
   inlineMedia: true,
+  mediaSize: "medium",
   mediaOrigins: [],
   showMemberList: true,
   compact: false,
